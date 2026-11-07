@@ -10,8 +10,6 @@ This repository contains professional Persian LaTeX resume templates designed fo
 ### Usage
 You can compile these templates using the **XeLaTeX** compiler locally or on [Overleaf](https://www.overleaf.com/).
 
-### Credits
-- Based on the "Awesome_CV" template originally created by <a href="https://github.com/posquit0">posquit0</a>: [GitHub Repository](https://github.com/posquit0/Awesome-CV)
 
 ---
 
