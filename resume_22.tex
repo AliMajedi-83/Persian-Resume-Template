@@ -1,0 +1,269 @@
+% !TEX program = xelatex
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{geometry}
+\geometry{top=1cm, bottom=1cm, left=1.2cm, right=1.2cm}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fontawesome5}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{paracol}
+
+% ===== رنگ‌های استخراج‌شده از قالب HTML =====
+\definecolor{primary}{HTML}{3E4952}    % سرمه‌ای-خاکستری (هدر و تاکیدها)
+\definecolor{textbody}{HTML}{44525D}   % متن بدنه
+\definecolor{headbg}{HTML}{E1E1E3}     % پس‌زمینه روشن
+\definecolor{lightborder}{HTML}{F2F2F2}% حاشیه خیلی روشن
+\definecolor{linkblue}{HTML}{1E6FBA}
+
+\usepackage[colorlinks=true, linkcolor=linkblue, urlcolor=linkblue]{hyperref}
+
+\usepackage{xepersian}
+\settextfont[
+  Path=/home/ali/.local/share/fonts/,
+  Extension=.ttf,
+  UprightFont=Vazirmatn-Regular,
+  BoldFont=Vazirmatn-Bold,
+  AutoFakeSlant=0.15
+]{Vazirmatn}
+\setlatintextfont{Latin Modern Roman}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\linespread{1.12}
+\hfuzz=2pt
+
+% ---------- عنوان بخش (آیکون + برچسب + خط ضخیم زیرین) ----------
+\newcommand{\cvsection}[2]{%
+  \vspace{8pt}%
+  \noindent
+  {\color{primary}\Large\faIcon{#1}}%
+  \hspace{5pt}%
+  {\Large\bfseries\color{textbody}#2}%
+  \par\vspace{2pt}%
+  {\color{primary}\noindent\rule{\linewidth}{2pt}}%
+  \vspace{4pt}%
+}
+
+% ---------- نوار مهارت ۵ بلوکی ----------
+\newcommand{\skillbar}[1]{%
+  \begin{tikzpicture}[baseline=0pt]
+    \foreach \i in {1,...,5} {
+      \pgfmathsetmacro{\x}{(\i-1)*0.44}
+      \ifnum\i>#1\relax
+        \fill[headbg] (\x+0.01, 0.01) rectangle (\x+0.43, 0.19);
+      \else
+        \fill[primary] (\x+0.01, 0.01) rectangle (\x+0.43, 0.19);
+      \fi
+    }
+    \draw[primary, line width=1pt] (0, 0) rectangle (2.2, 0.2);
+  \end{tikzpicture}%
+}
+
+% ---------- آیتم مهارت (برچسب بالا، نوار پایین) ----------
+\newcommand{\skillentry}[2]{%
+  {\small\bfseries\color{textbody}#1}\par\vspace{1pt}%
+  \skillbar{#2}\par\vspace{5pt}%
+}
+
+% ---------- بج تاریخ با فلش مثلثی ----------
+\newcommand{\datebadge}[1]{%
+  \begin{tikzpicture}[baseline=(d.base)]
+    \node[fill=primary, text=white, inner sep=3pt,
+          font=\footnotesize\bfseries] (d) {#1};
+    \fill[primary] (d.east) -- ++(5pt, 2.5pt) -- ++(0,-5pt) -- cycle;
+  \end{tikzpicture}%
+}
+
+% ---------- محیط‌ها ----------
+\newenvironment{bullets}{%
+  \begin{itemize}[nosep, leftmargin=1.2em, itemindent=0pt, itemsep=2pt]%
+}{\end{itemize}}
+
+\newenvironment{projdesc}{%
+  \begin{itemize}[nosep, leftmargin=1.2em, itemindent=0pt,
+                  itemsep=1pt, topsep=2pt, font=\small]%
+}{\end{itemize}}
+
+\newenvironment{cvblock}{%
+  \begin{itemize}[label={}, leftmargin=0pt, itemindent=0pt,
+                  nosep, itemsep=8pt, topsep=0pt]%
+}{\end{itemize}}
+
+\begin{document}
+
+% ==================== هدر تیره + نوار تماس روشن + عکس دایره‌ای ====================% ==================== هدر تیره + نوار تماس روشن + عکس دایره‌ای ====================
+\noindent
+\begin{tikzpicture}
+  % محدوده کل بلوک (هدر + نوار تماس + برآمدگی عکس)
+  \useasboundingbox (0, 0.1) rectangle (\linewidth, -5.1cm);
+
+  % پس‌زمینه هدر تیره
+  \fill[primary] (0, 0) rectangle (\linewidth, -3cm);
+  % پس‌زمینه نوار تماس روشن
+  \fill[headbg] (0, -3cm) rectangle (\linewidth, -4.9cm);
+
+  % متن هدر
+  \node[anchor=north, text=white, font=\LARGE\bfseries]
+    at (\linewidth/2, -0.3cm) {سیدعلی ماجدی};
+  \node[anchor=north, text=headbg, font=\large]
+    at (\linewidth/2, -1cm) {کارشناس مهندسی صنایع};
+  \node[anchor=north, text=headbg, font=\footnotesize]
+    at (\linewidth/2, -1.6cm) {%
+      متولد: \LR{1383/01/30}\hspace{0.6em}|\hspace{0.6em}%
+      وضعیت تأهل: مجرد\hspace{0.6em}|\hspace{0.6em}%
+      سربازی: معافیت تحصیلی};
+
+  % نوار تماس: شهر (چپ) و ایمیل/تلگرام (راست)
+  \node[anchor=west, text=textbody, font=\small]
+    at (0.3cm, -3.95cm) {\LR{\faMapMarker*}\ تهران، خیابان ۱۲ شهریور};
+  \node[anchor=east, text=textbody, font=\small, align=left]
+    at (\linewidth-0.3cm, -3.95cm) {%
+      \LR{\faEnvelope}\ \LR{s110majedi@gmail.com}\\[2pt]
+      \LR{\faTelegram}\ \LR{AliMajedi\_83}};
+
+  % عکس دایره‌ای (پایین‌تر آمده تا روی متن وضعیت تأهل نیفتد)
+  \begin{scope}
+    \clip (\linewidth/2, -3.7cm) circle (1.1cm);
+    \IfFileExists{images/10.jpg}{%
+      \node[inner sep=0] at (\linewidth/2, -3.7cm)
+        {\includegraphics[width=2.2cm]{images/10.jpg}};
+    }{%
+      \fill[white] (\linewidth/2, -3.7cm) circle (1.1cm);
+      \node[text=primary, font=\Huge] at (\linewidth/2, -3.7cm) {\faUser};
+    }
+  \end{scope}
+  \draw[white, line width=2.5pt] (\linewidth/2, -3.7cm) circle (1.1cm);
+\end{tikzpicture}
+
+\vspace{4pt}
+
+% ==================== چیدمان دو ستونی ====================
+% اگر ستون‌ها معکوس شدند (باریک در چپ و پهن در راست)،
+% محتوای دو ستون را جابه‌جا کنید یا \columnratio را به 0.64 تغییر دهید
+\columnratio{0.36}
+\begin{paracol}{2}
+
+% ========== ستون باریک (سمت راست در RTL) ==========
+\cvsection{user}{خلاصه رزومه}
+\begin{bullets}
+  \item {\small دانشجوی مهندسی صنایع شریف با مهارت بالا در پایتون، لینوکس و هوش مصنوعی.}
+  \item {\small علاقه‌مند به حل مسائل پیچیده کامپیوتری، خودکارسازی فرآیندها و استخراج داده.}
+  \item {\small آشنایی با فضاهای ابری و پلتفرم‌های اشتراک‌گذاری کد مانند \LR{GitHub}، \LR{Kaggle} و \LR{Google Colab}.}
+  \item {\small دارای سابقه توسعه پروژه‌های کاربردی شخصی و روحیه خودآموزی بالا.}
+\end{bullets}
+
+\cvsection{lightbulb}{مهارت‌ها}
+\vspace{2pt}
+\skillentry{\LR{MQL5 و الگوریتم‌های معاملاتی}}{3}
+\skillentry{مستندسازی با \LR{LaTeX}}{4}
+\skillentry{ماشین لرنینگ و تحلیل داده}{3}
+\skillentry{پایگاه داده}{2}
+\skillentry{پایتون}{4}
+\skillentry{لینوکس و مفاهیم سیستم‌عامل}{4}
+\skillentry{\LR{Git} و \LR{GitHub}}{3}
+
+\cvsection{globe}{زبان}
+\vspace{2pt}
+\skillentry{انگلیسی}{4}
+
+\cvsection{handshake}{مهارت‌های نرم}
+\begin{bullets}
+  \item {\small مسئولیت‌پذیری، علاقه‌مند به یادگیری مستمر و توانایی حل مسئله.}
+\end{bullets}
+
+\switchcolumn
+
+% ========== ستون پهن (سمت چپ در RTL) ==========
+\cvsection{graduation-cap}{سوابق تحصیلی}
+\begin{cvblock}
+\item \textbf{\color{primary}کارشناسی مهندسی صنایع}\par
+{\small\color{textbody}دانشگاه صنعتی شریف --- تهران}
+\end{cvblock}
+
+\cvsection{project-diagram}{پروژه‌ها}
+
+\begin{cvblock}
+\item \textbf{\color{primary}سامانه رزرو بلیت سینما (\LR{CinemaSharif})}%
+  \hfill\datebadge{آذر ۱۴۰۴}\par
+{\small\color{textbody}پروژه شخصی / دانشگاهی}\par
+\begin{projdesc}
+  \item توسعه سامانه کامل رزرو بلیت و مدیریت سینما با \LR{Django} و \LR{PostgreSQL}. پیاده‌سازی احراز هویت با موبایل، کیف پول داخلی و پنل مدیریت اختصاصی.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/CinemaSharif}%
+  {\textcolor{linkblue}{\footnotesize github.com/AliMajedi-83/CinemaSharif}}}
+\end{cvblock}
+
+\begin{cvblock}
+\item \textbf{\color{primary}ربات اتوماسیون کلاس‌های آنلاین (\LR{Skyroom-Auto-Attend})}\par
+{\small\color{textbody}پروژه شخصی}\par
+\begin{projdesc}
+  \item اپلیکیشن پایتون با معماری دوگانه \LR{GUI/CLI} برای ورود خودکار به کلاس‌های اسکای‌روم. ضبط خودکار جلسات، مدیریت جدول زمانی و ترکیب خودکار فایل‌های چندرسانه‌ای.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/Skyroom-Auto-Attend}%
+  {\textcolor{linkblue}{\footnotesize github.com/AliMajedi-83/Skyroom-Auto-Attend}}}
+\end{cvblock}
+
+\begin{cvblock}
+\item \textbf{\color{primary}استخراج‌کننده کندل‌های بازار مالی (\LR{MT5-M1-BidAsk-Exporter})}\par
+{\small\color{textbody}پروژه شخصی}\par
+\begin{projdesc}
+  \item ابزار \LR{Expert Advisor} به زبان \LR{MQL5} برای اجرا در \LR{Strategy Tester}. استخراج دقیق \LR{Bid} و \LR{Ask} همراه با \LR{OHLC} و \LR{Spread} کندل‌های ۱ دقیقه‌ای جهت تحلیل در پایتون.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/MT5-M1-BidAsk-Exporter}%
+  {\textcolor{linkblue}{\footnotesize github.com/AliMajedi-83/MT5-M1-BidAsk-Exporter}}}
+\end{cvblock}
+
+\begin{cvblock}
+\item \textbf{\color{primary}داشبوردهای تحلیل آماری و کنترل کیفیت (\LR{Statistics\_Project})}\par
+{\small\color{textbody}پروژه دانشگاهی}\par
+\begin{projdesc}
+  \item داشبوردهای وب با \LR{R} و \LR{Shiny} جهت پیاده‌سازی آمار مهندسی و کنترل کیفیت. تحلیل دیتاست \LR{SECOM}، رسم منحنی‌های \LR{OC}، تحلیل \LR{ANOVA} و شبیه‌سازی توزیع‌های آماری با \LR{bslib} و \LR{ggplot}.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/Statistics_Project}%
+  {\textcolor{linkblue}{\footnotesize github.com/AliMajedi-83/Statistics\_Project}}}
+\end{cvblock}
+
+\begin{cvblock}
+\item \textbf{\color{primary}پیش‌بینی حد سود و ضرر فارکس با ترنسفورمر (\LR{Forex-SL-TP-Prediction})}\par
+{\small\color{textbody}پروژه شخصی / پژوهشی}\par
+\begin{projdesc}
+  \item مدل یادگیری عمیق مبتنی بر ترنسفورمر جهت پیش‌بینی ماتریس برخورد قیمت به \LR{SL} و \LR{TP}. پیاده‌سازی \LR{Cross-Attention}، تابع خطای \LR{BCE} وزن‌دار و امتیازدهی ریسک‌آگاه.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://colab.research.google.com/drive/11UVGcd8ofB5Pry0TlUdaY8cIlkfylQVu?usp=sharing}%
+  {\textcolor{linkblue}{\footnotesize Google Colab}}}
+\end{cvblock}
+
+\begin{cvblock}
+\item \textbf{\color{primary}دیتاست تقویم اقتصادی فارکس فکتوری (\LR{ForexFactory-News-Dataset})}\par
+{\small\color{textbody}پروژه شخصی}\par
+\begin{projdesc}
+  \item ربات استخراج وب جهت جمع‌آوری، پاک‌سازی و ساختاردهی دیتاست اخبار \LR{Forex Factory} از ۲۰۰۷ تا ۲۰۲۶. انتشار دیتاست در \LR{Kaggle} جهت پژوهش‌های تحلیل بنیادی.
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://www.kaggle.com/datasets/seyyedalimajedi/forexfactory-news-csv}%
+  {\textcolor{linkblue}{\footnotesize kaggle.com/.../forexfactory-news-csv}}}
+\end{cvblock}
+
+\cvsection{briefcase}{سوابق شغلی}
+\begin{cvblock}
+\item \textbf{\color{primary}آموزش ریاضی دبیرستان}\par
+{\small\color{textbody}مدرسه علوی --- تهران}\par
+\begin{projdesc}
+  \item دستیار معلم برای رفع اشکال و تست‌زنی سال کنکور.
+\end{projdesc}
+\end{cvblock}
+
+\end{paracol}
+
+\end{document}
