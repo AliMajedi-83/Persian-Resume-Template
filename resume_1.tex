@@ -1,0 +1,257 @@
+% !TEX program = xelatex
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{geometry}
+\geometry{top=1.2cm, bottom=1.2cm, left=1.4cm, right=1.4cm}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fontawesome5}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+
+\definecolor{primary}{HTML}{262E40}
+\definecolor{muted}{HTML}{565656}
+\definecolor{lightgray}{HTML}{D3D3D3}
+\definecolor{headlight}{HTML}{CED4D9}
+\definecolor{linkblue}{HTML}{1E6FBA}
+
+\usepackage[colorlinks=true, linkcolor=linkblue, urlcolor=linkblue]{hyperref}
+
+\usepackage{xepersian}
+\settextfont[
+  Path=/home/ali/.local/share/fonts/,
+  Extension=.ttf,
+  UprightFont=Vazirmatn-Regular,
+  BoldFont=Vazirmatn-Bold,
+  AutoFakeSlant=0.15
+]{Vazirmatn}
+\setlatintextfont{Latin Modern Roman}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\linespread{1.15}
+\hfuzz=2pt
+
+% ---------- کادر مشکی گرد دور تا دور صفحات ----------
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \draw[color=black, line width=0.8pt, rounded corners=3mm] 
+      ([xshift=8mm,yshift=-8mm]current page.north west) 
+      rectangle 
+      ([xshift=-8mm,yshift=8mm]current page.south east);
+  \end{tikzpicture}%
+}
+
+% ---------- عنوان بخش ----------
+\newcommand{\cvsection}[2]{%
+  \vspace{16pt}%
+  \noindent\LR{\color{primary}\large\faIcon{#1}}\hspace{6pt}%
+  {\large\bfseries\color{black}#2}\par
+  \vspace{1pt}%
+  \noindent\begin{tikzpicture}
+    \draw[dashed, lightgray, line width=0.5pt] (0,0) -- (\linewidth,0);
+  \end{tikzpicture}\par
+  \vspace{8pt}%
+}
+
+% ---------- نوار مهارت / زبان ----------
+\newcommand{\langbar}[1]{%
+  \LR{%
+    \begin{tikzpicture}[baseline=-0.6ex]
+      \foreach \i in {1,...,5} {
+        \ifnum\i>#1\relax
+          \fill[lightgray] (\i*0.26,0) rectangle ++(0.20,0.13);
+        \else
+          \fill[primary]   (\i*0.26,0) rectangle ++(0.20,0.13);
+        \fi
+      }
+    \end{tikzpicture}%
+  }%
+}
+
+% ---------- بولت‌لیست با tab (۲em) ----------
+\newenvironment{bullets}{%
+  \begin{itemize}[nosep, leftmargin=2em, itemindent=0pt, itemsep=3pt]%
+}{\end{itemize}}
+
+% ---------- توضیح زیرمجموعه‌ی پروژه ----------
+\newenvironment{projdesc}{%
+  \begin{itemize}[label={}, leftmargin=2em, itemindent=0pt, nosep,
+                  itemsep=0pt, topsep=3pt]%
+}{\end{itemize}}
+
+% ---------- بلاک اطلاعات با تورفتگی مشابه بولت‌ها ----------
+\newenvironment{cvblock}{%
+  \begin{itemize}[label={}, leftmargin=2em, itemindent=0pt, nosep, itemsep=6pt, topsep=0pt]%
+}{\end{itemize}}
+
+\begin{document}
+
+% ========== هدر ==========
+\begin{tcolorbox}[colback=primary, colframe=primary, rounded corners, arc=5mm,
+                  boxrule=0pt, left=10pt, right=10pt, top=10pt, bottom=10pt]
+  \begin{minipage}[c]{0.72\linewidth}
+    \color{headlight}
+    {\LARGE\bfseries\color{white}سیدعلی ماجدی}\par
+    \vspace{12pt}
+    {\small\color{headlight}کارشناس مهندسی صنایع}\par
+    \vspace{10pt}
+    \small
+    \LR{\faTelegram}\ \LR{AliMajedi\_83}\par\vspace{1pt}
+    \LR{\faEnvelope}\ \LR{s110majedi@gmail.com}\par\vspace{1pt}
+    \LR{\faMapMarker*}\ تهران، خیابان ۱۷ شهریور\par
+    \vspace{4pt}
+    {\footnotesize متولد: \LR{1383/01/30} \hfill وضعیت تأهل: مجرد \hfill سربازی: معافیت تحصیلی}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[c]{0.24\linewidth}
+    \centering
+    \IfFileExists{images/10.jpg}{%
+      \begin{tikzpicture}
+        \clip (0,0) circle (1.45cm);
+        \node at (0,0) {\includegraphics[width=2.9cm]{images/10.jpg}};
+      \end{tikzpicture}%
+    }{%
+      \begin{tikzpicture}
+        \fill[white] (0,0) circle (1.45cm);
+        \node[color=primary] at (0,0) {\Huge\faUser};
+      \end{tikzpicture}%
+    }
+  \end{minipage}
+\end{tcolorbox}
+
+% ========== خلاصه رزومه ==========
+\cvsection{user}{خلاصه رزومه}
+\begin{bullets}
+  \item دانشجوی مهندسی صنایع شریف مسلط به پایتون، لینوکس و علم داده.
+  \item علاقه‌مند به حل مسائل پیچیده کامپیوتری در لینوکس، خودکارسازی فرآیندها.
+  \item آشنایی و فعالیت در فضاهای ابری و پلتفرم‌های اشتراک‌گذاری کد مانند \LR{GitHub}، \LR{Kaggle} و \LR{Google Colab}.
+  \item سابقه توسعه پروژه‌های کاربردی شخصی و روحیه خودآموزی بالا جهت پیوستن به تیم‌های فنی و مهندسی.
+\end{bullets}
+
+% ========== سوابق تحصیلی ==========
+\cvsection{graduation-cap}{سوابق تحصیلی}
+\begin{cvblock}
+\item \textbf{\color{primary}کارشناسی مهندسی صنایع}\par
+{\small\color{muted}موسسه/دانشگاه: دانشگاه صنعتی شریف --- تهران}
+\end{cvblock}
+
+% ========== مهارت‌های نرم ==========
+\cvsection{handshake}{مهارت‌های نرم}
+\begin{bullets}
+  \item مسئولیت‌پذیری، علاقه‌مند به یادگیری مستمر و توانایی حل مسئله.
+\end{bullets}
+
+% ========== مهارت‌ها ==========
+\cvsection{lightbulb}{مهارت‌ها}
+\vspace{4pt}
+\noindent
+\begin{LTR}
+\begin{tabularx}{\dimexpr\linewidth-2em\relax}{X c}
+  \RL{\textbf{\color{primary}زبان \LR{MQL5} و الگوریتم‌های معاملاتی (تریدینگ)}} & \langbar{3} \\[4pt]
+  \RL{\textbf{\color{primary}مستندسازی با \LR{LaTeX}}} & \langbar{4} \\[4pt]
+  \RL{\textbf{\color{primary}ماشین لرنینگ و تحلیل داده}} & \langbar{3} \\[4pt]
+  \RL{\textbf{\color{primary}پایگاه داده}} & \langbar{2} \\[4pt]
+  \RL{\textbf{\color{primary}پایتون}} & \langbar{4} \\[4pt]
+  \RL{\textbf{\color{primary}لینوکس و مفاهیم سیستم عامل}} & \langbar{4} \\[4pt]
+  \RL{\textbf{\color{primary}گیت و گیت‌هاب}} & \langbar{3}
+\end{tabularx}
+\end{LTR}
+
+% ========== زبان ==========
+\cvsection{globe}{زبان}
+\vspace{4pt}
+\noindent
+\begin{LTR}
+\begin{tabularx}{\dimexpr\linewidth-2em\relax}{X c}
+  \RL{\textbf{\color{primary}انگلیسی}} & \langbar{4}
+\end{tabularx}
+\end{LTR}
+
+% ========== پروژه‌ها ==========
+\cvsection{project-diagram}{پروژه‌ها}
+
+% --- پروژه ۱ ---
+\begin{cvblock}
+\item \textbf{\color{primary}سامانه رزرو بلیت سینما (\LR{CinemaSharif})}\hfill{\small\color{muted}\LR{آذر 1404}}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه شخصی / دانشگاهی}\par
+\begin{projdesc}
+  \item {\small توسعه سامانه کامل رزرو بلیت و مدیریت سینما با استفاده از \LR{Django} و \LR{PostgreSQL}. پیاده‌سازی سیستم احراز هویت با شماره موبایل، سیستم کیف پول داخلی با گزارش تراکنش‌ها، و پنل مدیریت اختصاصی.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/CinemaSharif}{\textcolor{linkblue}{github.com/AliMajedi-83/CinemaSharif}}}
+\end{cvblock}
+
+% --- پروژه ۲ ---
+\begin{cvblock}
+\item \textbf{\color{primary}ربات اتوماسیون شرکت در کلاس‌های آنلاین (\LR{Skyroom-Auto-Attend})}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه شخصی}\par
+\begin{projdesc}
+  \item {\small طراحی و توسعه اپلیکیشن پایتون با معماری دوگانه \LR{GUI/CLI} برای ورود خودکار به کلاس‌های آنلاین اسکای‌روم. ضبط خودکار جلسات با استفاده از کتابخانه‌های صوتی پایتون. پیاده‌سازی قابلیت‌هایی نظیر مدیریت جدول زمانی هفتگی، الگوریتم هوشمند و ترکیب خودکار فایل‌های چندرسانه‌ای در پس‌زمینه.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/Skyroom-Auto-Attend}{\textcolor{linkblue}{github.com/AliMajedi-83/Skyroom-Auto-Attend}}}
+\end{cvblock}
+
+% --- پروژه ۳ ---
+\begin{cvblock}
+\item \textbf{\color{primary}استخراج‌کننده کندل‌های بازار مالی (\LR{MT5-M1-BidAsk-Exporter})}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه شخصی}\par
+\begin{projdesc}
+  \item {\small توسعه ابزار بهینه \LR{Expert Advisor} به زبان \LR{MQL5} جهت اجرا در \LR{Strategy Tester}. قابلیت ثبت و استخراج دقیق آخرین قیمت‌های \LR{Bid} و \LR{Ask} همراه با اطلاعات کامل \LR{OHLC} و \LR{Spread} و کندل‌های ۱ دقیقه‌ای (\LR{M1}) جهت تحلیل در پایتون.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/MT5-M1-BidAsk-Exporter}{\textcolor{linkblue}{github.com/AliMajedi-83/MT5-M1-BidAsk-Exporter}}}
+\end{cvblock}
+
+% --- پروژه ۴ ---
+\begin{cvblock}
+\item \textbf{\color{primary}داشبوردهای تحلیل آماری و کنترل کیفیت مهندسی (\LR{Statistics\_Project})}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه دانشگاهی}\par
+\begin{projdesc}
+  \item {\small توسعه مجموعه‌ای از داشبوردهای وب و تحلیلی با استفاده از \LR{R} و \LR{Shiny} جهت پیاده‌سازی مفاهیم آمار مهندسی و کنترل کیفیت آماری. تحلیل داده‌های واقعی ساختاری و سنسوری (مانند دیتاست \LR{SECOM})، رسم منحنی‌های مشخصه عملیاتی (\LR{OC Curves}) در طرح‌های نمونه‌برداری، تحلیل‌های \LR{ANOVA}، آزمون‌های فرض و شبیه‌سازی توزیع‌های آماری همراه با رابط کاربری واکنش‌گرا با \LR{bslib} و \LR{ggplot}.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://github.com/AliMajedi-83/Statistics_Project}{\textcolor{linkblue}{github.com/AliMajedi-83/Statistics\_Project}}}
+\end{cvblock}
+
+% --- پروژه ۵ (ترنسفورمر فارکس) ---
+\begin{cvblock}
+\item \textbf{\color{primary}پیش‌بینی سطوح حد سود و ضرر در فارکس با ترنسفورمر (\LR{Forex-SL-TP-Prediction})}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه شخصی / پژوهشی}\par
+\begin{projdesc}
+  \item {\small توسعه مدل یادگیری عمیق مبتنی بر معماری ترنسفورمر (\LR{Transformer}) جهت پیش‌بینی ماتریس هم‌زمان برخورد قیمت به سطوح حد سود و حد ضرر در بازار فارکس. پیاده‌سازی بلوک‌های \LR{Cross-Attention} برای خلاصه‌سازی ویژگی‌های زمانی کندل‌ها و طراحی تابع خطای اختصاصی \LR{BCE} وزن‌دار و امتیازدهی ریسک‌آگاه با آستانه دینامیک.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://colab.research.google.com/drive/11UVGcd8ofB5Pry0TlUdaY8cIlkfylQVu?usp=sharing}{\textcolor{linkblue}{Google Colab}}}
+\end{cvblock}
+
+% --- پروژه ۶ (دیتاست کگل) ---
+\begin{cvblock}
+\item \textbf{\color{primary}دیتاست تقویم اقتصادی فارکس فکتوری (\LR{ForexFactory-News-Dataset})}\par
+{\small\color{muted}کارفرما / درخواست‌کننده: پروژه شخصی}\par
+\begin{projdesc}
+  \item {\small توسعه ربات استخراج وب (\LR{Web Scraper}) جهت جمع‌آوری، پاک‌سازی و ساختاردهی دیتاست جامع اخبار و رویدادهای تقویم اقتصادی \LR{Forex Factory} از سال ۲۰۰۷ تا ۲۰۲۶. انتشار این دیتاست در پلتفرم کگل (\LR{Kaggle}) جهت استفاده پژوهشگران در مدل‌های معاملاتی مبتنی بر تحلیل بنیادی.}
+\end{projdesc}
+\vspace{2pt}
+\hfill\LR{\href{https://www.kaggle.com/datasets/seyyedalimajedi/forexfactory-news-csv}{\textcolor{linkblue}{kaggle.com/datasets/seyyedalimajedi/forexfactory-news-csv}}}
+\end{cvblock}
+
+% ========== سوابق شغلی ==========
+\cvsection{briefcase}{سوابق شغلی}
+\begin{cvblock}
+\item \textbf{\color{primary}آموزش ریاضی دبیرستان}\par
+{\small\color{muted}مدرسه علوی --- تهران}\par
+\vspace{2pt}
+{\small\color{muted}وظایف و دستاوردها:}
+\begin{bullets}
+  \item دستیار معلم برای رفع اشکال و تست‌زنی سال کنکور
+\end{bullets}
+\end{cvblock}
+
+\end{document}
